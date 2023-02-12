@@ -18,10 +18,10 @@ class CoreDataProvider {
         // register transformers
         ValueTransformer.setValueTransformer(UIColorTransformer(), forName: NSValueTransformerName("UIColorTransformer"))
         
-        persistentContainer = NSPersistentContainer(name: "RemidersModel")
+        persistentContainer = NSPersistentContainer(name: "RemindersModel")
         persistentContainer.loadPersistentStores { description, error in
             if let error {
-                fatalError("ReminderModel 초기화 실패! \(error)")
+                fatalError("RemindersModel 초기화 실패! \(error)")
             }
         }
     }

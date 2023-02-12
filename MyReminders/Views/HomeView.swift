@@ -10,11 +10,16 @@ import CoreData
 
 struct HomeView: View {
     
+    @FetchRequest(sortDescriptors: [])
+    private var myListResults: FetchedResults<MyList>
+    
     @State private var isPresented: Bool = false
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Hello, world")
+                List(myListResults) { list in
+                    Text(list.name)
+                }
                 
                 Spacer()
                 

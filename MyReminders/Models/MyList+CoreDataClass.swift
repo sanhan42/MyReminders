@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 
-@objc public class MyList: NSManagedObject {
+@objc(MyList)
+public class MyList: NSManagedObject {
     
 }
