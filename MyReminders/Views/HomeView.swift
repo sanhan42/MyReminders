@@ -10,15 +10,34 @@ import CoreData
 
 struct HomeView: View {
     
+    @State private var isPresented: Bool = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-            Text("Bye World!")
-        }
-        .padding()
+        NavigationStack {
+            VStack {
+                Text("Hello, world")
+                
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        isPresented = true
+                    } label: {
+                        Text("목록 추가")
+                            .frame(alignment: .trailing)
+                            .font(.headline)
+                    }.padding() // :BUTTON
+                        .sheet(isPresented: $isPresented) {
+                            NavigationView {
+                                AddNewListView { name, color in
+                                     // Save the list to the database
+                                }
+                            }
+                        }
+                } // :HSTACK
+            } // :VSTACK
+        }.padding() // :NAVIGATIONSTACK
     }
 }
 
