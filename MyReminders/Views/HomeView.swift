@@ -37,11 +37,12 @@ struct HomeView: View {
                                     } catch {
                                         print(error)
                                     }
+                                }
                             }
-                        }
-                } // :HSTACK
-            } // :VSTACK
-        }.padding() // :NAVIGATIONSTACK
+                        } // :HSTACK
+                } // :VSTACK
+            }.padding() // :NAVIGATIONSTACK
+        }
     }
 }
 
