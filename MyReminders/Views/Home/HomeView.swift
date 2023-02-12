@@ -17,9 +17,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                List(myListResults) { list in
-                    Text(list.name)
-                }
+                MyListView(myLists: myListResults)
                 
                 Spacer()
                 
@@ -32,7 +30,7 @@ struct HomeView: View {
                         Text("목록 추가")
                             .frame(alignment: .trailing)
                             .font(.headline)
-                    }.padding() // :BUTTON
+                    }.padding([.horizontal], 10) // :BUTTON
                         .sheet(isPresented: $isPresented) {
                             NavigationView {
                                 AddNewListView { name, color in
