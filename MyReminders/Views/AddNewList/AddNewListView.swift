@@ -15,7 +15,7 @@ struct AddNewListView: View {
     let onSave: (String, UIColor) -> Void
     
     private var isFormValid: Bool {
-        !name.isEmpty
+        !name.isEmptyOrWhitespace
     }
     
     var body: some View {
