@@ -31,8 +31,12 @@ struct HomeView: View {
                         .sheet(isPresented: $isPresented) {
                             NavigationView {
                                 AddNewListView { name, color in
-                                     // Save the list to the database
-                                }
+                                    // Save the list to the database
+                                    do {
+                                        try ReminderService.saveMyList(name, color)
+                                    } catch {
+                                        print(error)
+                                    }
                             }
                         }
                 } // :HSTACK
