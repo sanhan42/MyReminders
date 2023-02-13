@@ -17,7 +17,7 @@ extension MyList {
     
     @NSManaged public var name: String
     @NSManaged public var color: UIColor
-//    @NSManaged public var reminder: NSSet?
+    @NSManaged public var reminders: NSSet?
 }
 
 extension MyList: Identifiable {
