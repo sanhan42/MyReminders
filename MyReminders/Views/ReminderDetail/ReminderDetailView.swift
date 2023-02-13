@@ -13,6 +13,9 @@ struct ReminderDetailView: View {
     @Binding var  reminder: Reminder
     @State var editConfig: ReminderEditConfig = ReminderEditConfig()
     
+    //TODO: 날짜 선택 부분 마무리, 시간 선택 부분에도 적용하기
+    @State private var showDatePicker = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -20,37 +23,32 @@ struct ReminderDetailView: View {
                     Section {
                         TextField("제목", text: $editConfig.title)
                         TextField("메모", text: $editConfig.notes ?? "")
-                    }
+                    } // :SECTION1
                     
                     Section {
                         Toggle(isOn: $editConfig.hasDate) {
-//                            Label {
-//                                VStack(alignment: .leading) {
-//                                    Text("날짜")
-////                                    Text("날짜")
-////                                        .font(.caption)
-////                                        .foregroundColor(.blue)
-//
-//                                }
-//                            } icon: {
-//                                Image(systemName: "calendar")
-//                                    .foregroundColor(.red)
-//                                    .padding([.leading], 0)
-//                            }
-
-//                            HStack {
+                            HStack {
                                 Image(systemName: "calendar")
-                                    .foregroundColor(.red)
-//                                VStack(alignment: .leading) {
-//                                    Text("날짜")
-//                                    if editConfig.hasDate {
-//                                        Text("날짜 들어갈 부분")
-//                                    }
-//                                }
-//                            }
+                                    .foregroundColor(.white)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .fill(.red)
+                                            .frame(width: 30, height: 30)
+                                    }.padding([.trailing], 5)
+                                VStack(alignment: .leading) {
+                                    Text("날짜")
+                                    if editConfig.hasDate {
+                                        Text("날짜 들어갈 부분")
+                                            .font(.caption)
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                            }
+                        }.onTapGesture {
+                            showDatePicker = !editConfig.hasDate
                         }
                         
-                        if editConfig.hasDate {
+                        if showDatePicker && editConfig.hasDate {
                             DatePicker("Select Date", selection: $editConfig.reminderDate ?? Date(), displayedComponents: .date)
                                 .datePickerStyle(.graphical)
                         }
@@ -64,7 +62,20 @@ struct ReminderDetailView: View {
                             DatePicker("Select Time", selection: $editConfig.reminderTime ?? Date(), displayedComponents: .hourAndMinute)
                                 .datePickerStyle(.wheel)
                         }
-                    }
+                    } // :SECTION2
+                    
+                    Section {
+                        NavigationLink {
+                            Text("SelectListView")
+                        } label: {
+                            HStack {
+                                Text("목록")
+                                Spacer()
+                                Text(reminder.list!.name)
+                            }
+                        }
+
+                    } // :SECTION3
                 }.listStyle(.insetGrouped) // :List
             } // :VSTACK
             .onAppear {
@@ -83,7 +94,7 @@ struct ReminderDetailView: View {
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("취소") {
-                        
+                        dismiss()
                     }
                 }
             }
