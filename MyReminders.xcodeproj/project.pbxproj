@@ -23,6 +23,7 @@
 		BFD01A642999A90E002D26AF /* MyListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A632999A90E002D26AF /* MyListCellView.swift */; };
 		BFD01A682999A99D002D26AF /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A672999A99D002D26AF /* PreviewData.swift */; };
 		BFD01A6B2999AC86002D26AF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A6A2999AC86002D26AF /* String+Extension.swift */; };
+		BFD01A6E2999BE2E002D26AF /* MyListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A6D2999BE2E002D26AF /* MyListDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		BFD01A632999A90E002D26AF /* MyListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListCellView.swift; sourceTree = "<group>"; };
 		BFD01A672999A99D002D26AF /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		BFD01A6A2999AC86002D26AF /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		BFD01A6D2999BE2E002D26AF /* MyListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 		BF7D4523299233260070E82B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BFD01A6C2999BE1D002D26AF /* MyListDetail */,
 				BFD01A652999A930002D26AF /* Home */,
 				BFD01A662999A93A002D26AF /* AddNewList */,
 			);
@@ -165,6 +168,14 @@
 				BFD01A6A2999AC86002D26AF /* String+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		BFD01A6C2999BE1D002D26AF /* MyListDetail */ = {
+			isa = PBXGroup;
+			children = (
+				BFD01A6D2999BE2E002D26AF /* MyListDetailView.swift */,
+			);
+			path = MyListDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,6 +254,7 @@
 				BF7D4520299225860070E82B /* MyList+CoreDataClass.swift in Sources */,
 				BFD01A682999A99D002D26AF /* PreviewData.swift in Sources */,
 				BFD01A60299939D0002D26AF /* UIColorTransformer.swift in Sources */,
+				BFD01A6E2999BE2E002D26AF /* MyListDetailView.swift in Sources */,
 				BF7D450629921CC00070E82B /* MyRemindersApp.swift in Sources */,
 				BF7D451A29921D3F0070E82B /* CoreDataProvider.swift in Sources */,
 				BFD01A6B2999AC86002D26AF /* String+Extension.swift in Sources */,
