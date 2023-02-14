@@ -30,6 +30,7 @@
 		BFD01A792999F36E002D26AF /* ReminderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A782999F36E002D26AF /* ReminderDetailView.swift */; };
 		BFD01A7C2999F4DF002D26AF /* ReminderEditConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A7B2999F4DF002D26AF /* ReminderEditConfig.swift */; };
 		BFD01A7F2999FA4B002D26AF /* CustomOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A7E2999FA4B002D26AF /* CustomOperators.swift */; };
+		BFD01A83299A69F7002D26AF /* SelectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD01A82299A69F7002D26AF /* SelectListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		BFD01A782999F36E002D26AF /* ReminderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailView.swift; sourceTree = "<group>"; };
 		BFD01A7B2999F4DF002D26AF /* ReminderEditConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderEditConfig.swift; sourceTree = "<group>"; };
 		BFD01A7E2999FA4B002D26AF /* CustomOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperators.swift; sourceTree = "<group>"; };
+		BFD01A82299A69F7002D26AF /* SelectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				BFD01A662999A93A002D26AF /* AddNewList */,
 				BFD01A6C2999BE1D002D26AF /* MyListDetail */,
 				BFD01A772999F350002D26AF /* ReminderDetail */,
+				BFD01A81299A69DC002D26AF /* SelectList */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -218,6 +221,14 @@
 				BFD01A7E2999FA4B002D26AF /* CustomOperators.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		BFD01A81299A69DC002D26AF /* SelectList */ = {
+			isa = PBXGroup;
+			children = (
+				BFD01A82299A69F7002D26AF /* SelectListView.swift */,
+			);
+			path = SelectList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,6 +319,7 @@
 				BFD01A622999A6F4002D26AF /* MyListView.swift in Sources */,
 				BFD01A702999D546002D26AF /* ReminderListView.swift in Sources */,
 				BFD01A5D2999361A002D26AF /* ReminderService.swift in Sources */,
+				BFD01A83299A69F7002D26AF /* SelectListView.swift in Sources */,
 				BFD01A722999E543002D26AF /* ReminderCellView.swift in Sources */,
 				BFD01A762999EB4A002D26AF /* Date+Extension.swift in Sources */,
 				BFD01A7F2999FA4B002D26AF /* CustomOperators.swift in Sources */,
