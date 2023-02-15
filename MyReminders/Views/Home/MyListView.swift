@@ -31,6 +31,7 @@ struct MyListView: View {
                     .navigationDestination(for: MyList.self) { myList in
                        MyListDetailView(myList: myList)
                             .navigationTitle(myList.name)
+                            .navigationBarTitleDisplayMode(.large)
                     }
             }
         }

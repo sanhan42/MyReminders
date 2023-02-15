@@ -77,6 +77,9 @@ struct ReminderCellView: View {
                     onEvnet(.onInfo)
                 }
         } // :HSTACK
+        .onAppear {
+            checked = reminder.isCompleted
+        }
         .contentShape(Rectangle())
         .onTapGesture {
             onEvnet(.onSelect(reminder))
