@@ -7,17 +7,26 @@
 
 import SwiftUI
 
+enum ReminderCellEvents {
+    case onSelect(Reminder)
+    case onCheckedChange(Reminder, Bool)
+    case onInfo
+}
+
 struct ReminderCellView: View {
     
     let reminder: Reminder
+    private let delay = Delay()
+    let isSelected: Bool
     
     @State private var checked = false
+    let onEvnet: (ReminderCellEvents) -> Void
     
     private func formatDate(_ date: Date) -> String {
         if date.isToday {
-            return "Today"
+            return "오늘"
         } else if date.isTomorrow {
-            return "Tomorrow"
+            return "내일"
         } else {
             return date.formatted(date: .numeric, time: .omitted)
         }
@@ -31,6 +40,12 @@ struct ReminderCellView: View {
                 .opacity(checked ? 1 : 0.4)
                 .onTapGesture {
                     checked.toggle()
+                    
+                    delay.cancel()
+                    delay.performWork {
+                        onEvnet(.onCheckedChange(reminder, checked))
+                    }
+                    
                 }
             
             VStack(alignment: .leading) {
@@ -40,26 +55,37 @@ struct ReminderCellView: View {
                         .opacity(0.4)
                         .font(.caption)
                 }
-            }
-            
-            HStack {
-                if let reminderDate = reminder.reminderDate {
-                    Text(formatDate(reminderDate))
-                }
                 
-                if let reminderTime = reminder.reminderTime {
-                    Text(reminderTime.formatted(date: .omitted, time: .shortened))
+                HStack {
+                    if let reminderDate = reminder.reminderDate {
+                        Text(formatDate(reminderDate))
+                    }
+                    
+                    if let reminderTime = reminder.reminderTime {
+                        Text(reminderTime.formatted(date: .omitted, time: .shortened))
+                    }
+                } // :HSTACK
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.caption)
+                .opacity(0.4)
+            } // :VSTACK
+            
+            Spacer()
+            Image(systemName: "info.circle.fill")
+                .opacity(isSelected ? 1.0 : 0.0)
+                .onTapGesture {
+                    onEvnet(.onInfo)
                 }
-            } // :HSTACK
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.caption)
-            .opacity(0.4)
         } // :HSTACK
+        .contentShape(Rectangle())
+        .onTapGesture {
+            onEvnet(.onSelect(reminder))
+        }
     }
 }
 
 struct ReminderCellView_Previews: PreviewProvider {
     static var previews: some View {
-        ReminderCellView(reminder: PreviewData.reminder)
+        ReminderCellView(reminder: PreviewData.reminder, isSelected: false) { _ in }
     }
 }
