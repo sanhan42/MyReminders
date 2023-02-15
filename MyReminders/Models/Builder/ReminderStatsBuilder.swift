@@ -8,6 +8,13 @@
 import Foundation
 import SwiftUI
 
+enum ReminderStatType {
+    case today
+    case scheduled
+    case all
+    case completed
+}
+
 struct ReminderStatsValues {
     
     var todaysCount: Int = 0
@@ -19,7 +26,14 @@ struct ReminderStatsValues {
 struct ReminderStatsBuilder {
     private func calculateTodaysCount(reminders: [Reminder]) -> Int {
         return reminders.reduce(0) { partialResult, reminder in
-            let isToday = reminder.reminderDate?.isToday ?? false
+            var isToday: Bool {
+                if reminder.reminderDate != nil {
+                    return reminder.reminderDate?.isToday ?? false
+                } else if reminder.reminderTime != nil {
+                    return true
+                }
+                return false
+            }
             return isToday ? partialResult + 1 : partialResult
         }
     }

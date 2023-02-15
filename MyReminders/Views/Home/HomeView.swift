@@ -16,6 +16,18 @@ struct HomeView: View {
     @FetchRequest(sortDescriptors: [])
     private var searchResults: FetchedResults<Reminder>
     
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .today))
+    private var todayResult: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .scheduled))
+    private var scheduledResult: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .all))
+    private var allResult: FetchedResults<Reminder>
+    
+    @FetchRequest(fetchRequest: ReminderService.remindersByStatType(statType: .completed))
+    private var completedResult: FetchedResults<Reminder>
+    
     @State private var search: String = ""
     @State private var searching: Bool = false
     @State private var isPresented: Bool = false
@@ -28,13 +40,31 @@ struct HomeView: View {
             VStack {
                 ScrollView {
                     HStack {
-                        ReminderStatsView(icon: "calendar.circle.fill", title: "오늘", count: reminderStatsValues.todaysCount)
-                        ReminderStatsView(icon: "calendar.badge.clock", title: "예정", count: reminderStatsValues.scheduledCount)
+                        NavigationLink {
+                            ReminderListView(reminders: todayResult)
+                        } label: {
+                            ReminderStatsView(icon: "calendar.circle.fill", title: "오늘", count: reminderStatsValues.todaysCount)
+                        }
+                        
+                        NavigationLink {
+                            ReminderListView(reminders: scheduledResult)
+                        } label: {
+                            ReminderStatsView(icon: "calendar.badge.clock", title: "예정", count: reminderStatsValues.scheduledCount, iconColor: .red)
+                        }
                     }
                     
                     HStack {
-                        ReminderStatsView(icon: "tray.circle.fill", title: "전체", count: reminderStatsValues.allCount, iconColor: .gray)
-                        ReminderStatsView(icon: "checkmark.circle.fill", title: "완료", count: reminderStatsValues.completedCount)
+                        NavigationLink {
+                            ReminderListView(reminders: allResult)
+                        } label: {
+                            ReminderStatsView(icon: "tray.circle.fill", title: "전체", count: reminderStatsValues.allCount, iconColor: .black)
+                        }
+                        
+                        NavigationLink {
+                            ReminderListView(reminders: completedResult)
+                        } label: {
+                            ReminderStatsView(icon: "checkmark.circle.fill", title: "완료", count: reminderStatsValues.completedCount, iconColor: .secondary)
+                        }
                     }
                     
                     Text("나의 목록")

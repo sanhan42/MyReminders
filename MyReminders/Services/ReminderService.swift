@@ -64,4 +64,24 @@ class ReminderService {
         request.predicate = NSPredicate(format: "list = %@ AND isCompleted = false", myList)
         return request
     }
+    
+    static func remindersByStatType(statType: ReminderStatType) -> NSFetchRequest<Reminder> {
+        let request = Reminder.fetchRequest()
+        request.sortDescriptors = []
+        
+        switch statType {
+        case .today:
+            let today = Date()
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)
+//            request.predicate = NSPredicate(format: "((reminderDate != nil) AND (reminderDate BETWEEN {%@, %@})) OR ((reminderTime != nil) AND (reminderTime BETWEEN {%@, %@}))", today as NSDate, tomorrow! as NSDate)
+            request.predicate = NSPredicate(format: "(reminderDate != nil && reminderDate BETWEEN {%@, %@}) || (reminderDate == nil && reminderTime != nil)", today as NSDate, tomorrow! as NSDate)
+        case .all:
+            request.predicate = NSPredicate(format: "isCompleted = false")
+        case .scheduled:
+            request.predicate = NSPredicate(format: "(reminderDate != nil || reminderTime != nil) && isCompleted = false")
+        case .completed:
+            request.predicate = NSPredicate(format: "isCompleted = true")
+        }
+        return request
+    }
 }

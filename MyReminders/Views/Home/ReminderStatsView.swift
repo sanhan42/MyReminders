@@ -30,7 +30,7 @@ struct ReminderStatsView: View {
                     Text("\(count)")
                         .font(.largeTitle)
                 }
-            }.padding()
+            }.padding(10)
                 .frame(maxWidth: .infinity)
                 .background(Color(.systemGray3)) // TODO: 위에 글자색과 함께 조정 필요
                 .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
