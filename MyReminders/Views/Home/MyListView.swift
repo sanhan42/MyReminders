@@ -23,7 +23,7 @@ struct MyListView: View {
                             MyListCellView(myList: myList)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding([.leading], 10)
-                                .font(.title3)
+                                .font(.body)
                             Divider()
                         } // :VSTACK
                     } // :NAVIGATIONLINK
