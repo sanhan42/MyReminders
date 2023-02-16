@@ -19,40 +19,46 @@ struct AddNewListView: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack {
+            Color(.tertiarySystemBackground).ignoresSafeArea()
+            
             VStack {
-                Image(systemName: "line.3.horizontal.circle.fill")
-                    .foregroundColor(selectedColor)
-                    .font(.system(size: 100))
-                TextField("목록 이름", text: $name)
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(.roundedBorder)
-            }
-            .padding(30)
-            .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
-            
-            ColorPickerView(selectedColor: $selectedColor)
-            
-            Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("새로운 목록")
+                VStack {
+                    Image(systemName: "line.3.horizontal.circle.fill")
+                        .foregroundColor(selectedColor)
+                        .font(.system(size: 100))
+                    TextField("목록 이름", text: $name)
+                        .font(.title)
+                        .bold()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color(.quaternaryLabel)))
+                        .multilineTextAlignment(.center)
                 }
+                .padding(30)
+                .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                 
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("취소") {
-                        dismiss()
+                ColorPickerView(selectedColor: $selectedColor)
+                
+                Spacer()
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("새로운 목록")
                     }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing ) {
-                    Button("완료") {
-                        onSave(name, UIColor(selectedColor))
-                        dismiss()
-                    }.disabled(!isFormValid)
-                }
+                    
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("취소") {
+                            dismiss()
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing ) {
+                        Button("완료") {
+                            onSave(name, UIColor(selectedColor))
+                            dismiss()
+                        }.disabled(!isFormValid)
+                    }
             }
+        }
     }
 }
 

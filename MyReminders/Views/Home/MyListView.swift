@@ -24,6 +24,7 @@ struct MyListView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding([.leading], 10)
                                 .font(.body)
+                                .foregroundColor(Color(.label))
                             Divider()
                         } // :VSTACK
                     } // :NAVIGATIONLINK

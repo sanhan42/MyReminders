@@ -19,20 +19,29 @@ struct ReminderStatsView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
                     Image(systemName: icon)
-                        .foregroundColor(iconColor)
+                        .dynamicTypeSize(.xSmall)
+                        .foregroundColor(Color(.white))
                         .font(.title)
+                        .padding(8)
+                        .background {
+                            Circle()
+                                .foregroundColor(iconColor)
+                        }
                     Text(title)
+                        .font(.title3)
                         .bold()
                         .opacity(0.8)
+                        .padding([.leading], 4)
                 }
                 Spacer()
                 if let count {
                     Text("\(count)")
                         .font(.largeTitle)
                 }
-            }.padding(10)
+            }.padding(12)
                 .frame(maxWidth: .infinity)
-                .background(Color(.systemGray3)) // TODO: 위에 글자색과 함께 조정 필요
+                .foregroundColor(Color(.label))
+                .background(Color(.secondarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
         }
     }

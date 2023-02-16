@@ -35,67 +35,74 @@ struct HomeView: View {
     private var reminderStatsBuilder = ReminderStatsBuilder()
     @State private var reminderStatsValues = ReminderStatsValues()
     
+    private let space:CGFloat = 5
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack() {
                 ScrollView {
-                    HStack {
-                        NavigationLink {
-                            ReminderListView(reminders: todayResult)
-                        } label: {
-                            ReminderStatsView(icon: "calendar.circle.fill", title: "오늘", count: reminderStatsValues.todaysCount)
+                    VStack(spacing: space) {
+                        HStack(spacing: space) {
+                            NavigationLink {
+                                ReminderListView(reminders: todayResult)
+                            } label: {
+                                ReminderStatsView(icon: "calendar", title: "오늘", count: reminderStatsValues.todaysCount)
+                            }
+                            Spacer()
+                            
+                            NavigationLink {
+                                ReminderListView(reminders: scheduledResult)
+                            } label: {
+                                ReminderStatsView(icon: "calendar.badge.clock", title: "예정", count: reminderStatsValues.scheduledCount, iconColor: .red)
+                            }
                         }
                         
-                        NavigationLink {
-                            ReminderListView(reminders: scheduledResult)
-                        } label: {
-                            ReminderStatsView(icon: "calendar.badge.clock", title: "예정", count: reminderStatsValues.scheduledCount, iconColor: .red)
-                        }
-                    }
-                    
-                    HStack {
-                        NavigationLink {
-                            ReminderListView(reminders: allResult)
-                        } label: {
-                            ReminderStatsView(icon: "tray.circle.fill", title: "전체", count: reminderStatsValues.allCount, iconColor: .black)
-                        }
+                        Spacer()
                         
-                        NavigationLink {
-                            ReminderListView(reminders: completedResult)
-                        } label: {
-                            ReminderStatsView(icon: "checkmark.circle.fill", title: "완료", count: reminderStatsValues.completedCount, iconColor: .secondary)
-                        }
-                    }
-                    
-                    Text("나의 목록")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.title2)
-                        .bold()
-                        .padding(10)
-                    
-                    MyListView(myLists: myListResults)
-                    
-                    
-                    Button {
-                        isPresented = true
-                    } label: {
-                        Text("목록 추가")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .font(.headline)
-                    } // :BUTTON
-                    .padding()
-                    .sheet(isPresented: $isPresented) {
-                        NavigationView {
-                            AddNewListView { name, color in
-                                // Save the list to the database
-                                do {
-                                    try ReminderService.saveMyList(name, color)
-                                } catch {
-                                    print(error)
-                                }
+                        HStack(spacing: space) {
+                            NavigationLink {
+                                ReminderListView(reminders: allResult)
+                            } label: {
+                                ReminderStatsView(icon: "tray.fill", title: "전체", count: reminderStatsValues.allCount, iconColor: Color("CompletedColor"))
+                            }
+                            
+                            Spacer()
+                            
+                            NavigationLink {
+                                ReminderListView(reminders: completedResult)
+                            } label: {
+                                ReminderStatsView(icon: "checkmark", title: "완료됨", count: reminderStatsValues.completedCount, iconColor: Color(.opaqueSeparator))
                             }
                         }
                     }
+                        
+                        Text("나의 목록")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.title2)
+                            .bold()
+                            .padding(10)
+                        
+                        MyListView(myLists: myListResults)
+                        
+                        Button {
+                            isPresented = true
+                        } label: {
+                            Text("목록 추가")
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .font(.headline)
+                        } // :BUTTON
+                        .padding()
+                        .sheet(isPresented: $isPresented) {
+                            NavigationView {
+                                AddNewListView { name, color in
+                                    // Save the list to the database
+                                    do {
+                                        try ReminderService.saveMyList(name, color)
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            }
+                        }
                 } // :SCROLLVIEW
             } // :VSTACK
             .onChange(of: search, perform: { searchTerm in
