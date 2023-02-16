@@ -13,6 +13,8 @@ struct ReminderListView: View {
     @State private var selectedReminder: Reminder?
     @State private var showReminderDetail: Bool = false
     
+    @State private var tempReminder = Reminder()
+    
     private func reminderCheckedChanged(reminder: Reminder, isCompleted: Bool) {
         var editConfig = ReminderEditConfig(reminder: reminder)
         editConfig.isCompleted = isCompleted
@@ -56,8 +58,9 @@ struct ReminderListView: View {
                 } // :FOREACH
                 .onDelete(perform: deleteReminder)
             } // :LIST
+            .listStyle(.plain)
         }.sheet(isPresented: $showReminderDetail) {
-            ReminderDetailView(reminder: Binding($selectedReminder)!)
+            ReminderDetailView(isNew: false, newReminder: $tempReminder, reminder: Binding($selectedReminder)!, editConfig: ReminderEditConfig(reminder: selectedReminder!), originList: (selectedReminder?.list)!, onSaveNew: nil)
             
         }
     }

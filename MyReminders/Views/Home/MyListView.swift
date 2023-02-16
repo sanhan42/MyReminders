@@ -11,6 +11,17 @@ struct MyListView: View {
     
     let myLists: FetchedResults<MyList>
     
+    private func deleteList(_ indexSet: IndexSet) {
+        indexSet.forEach { index in
+            let list = myLists[index]
+            do {
+                try ReminderService.deleteList(list)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             if myLists.isEmpty {
@@ -28,7 +39,9 @@ struct MyListView: View {
                             Divider()
                         } // :VSTACK
                     } // :NAVIGATIONLINK
-                }.scrollContentBackground(.hidden) // :FOREACH
+                }.onDelete(perform: deleteList(_:))
+                .scrollContentBackground(.hidden) // :FOREACH
+                
                     .navigationDestination(for: MyList.self) { myList in
                        MyListDetailView(myList: myList)
                             .navigationTitle(myList.name)

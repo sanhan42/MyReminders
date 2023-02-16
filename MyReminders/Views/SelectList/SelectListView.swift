@@ -11,7 +11,8 @@ struct SelectListView: View {
     
     @FetchRequest(sortDescriptors: [])
     private var myListsFetchResults: FetchedResults<MyList>
-    @Binding var selectedList: MyList?
+    @Binding var reminder: Reminder
+    let onSave: ((MyList) -> Void)?
     
     var body: some View {
         List(myListsFetchResults) { myList in
@@ -24,12 +25,13 @@ struct SelectListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    self.selectedList = myList
+                    self.reminder.list = myList
+                    self.onSave!(reminder.list!)
                 }
                 
 //                Spacer()
                 
-                if selectedList == myList {
+                if reminder.list == myList {
                     Image(systemName: "checkmark")
                         .foregroundColor(.blue)
                 }
@@ -38,9 +40,9 @@ struct SelectListView: View {
     }
 }
 
-struct SelectListView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelectListView(selectedList: .constant(PreviewData.myList))
-            .environment(\.managedObjectContext, CoreDataProvider.shared.persistentContainer.viewContext)
-    }
-}
+//struct SelectListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SelectListView(selectedList: .constant(PreviewData.myList), onSave: nil)
+//            .environment(\.managedObjectContext, CoreDataProvider.shared.persistentContainer.viewContext)
+//    }
+//}

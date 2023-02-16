@@ -34,7 +34,7 @@ struct ReminderStatsBuilder {
                 }
                 return false
             }
-            return isToday ? partialResult + 1 : partialResult
+            return (isToday && !reminder.isCompleted) ? partialResult + 1 : partialResult
         }
     }
     

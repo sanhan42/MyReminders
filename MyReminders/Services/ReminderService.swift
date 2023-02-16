@@ -44,18 +44,30 @@ class ReminderService {
         try save()
     }
     
+    static func deleteList(_ list: MyList) throws {
+        viewContext.delete(list)
+        try save()
+    }
+    
     static func getRemindersBySearchTerm(_ searchTerm: String) -> NSFetchRequest<Reminder> {
         let request = Reminder.fetchRequest()
         request.sortDescriptors = []
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@ || notes CONTAINS[cd] %@", searchTerm, searchTerm)
         return request
     }
-    
-    static func saveReminderToMyList(myList: MyList, reminderTitle: String) throws {
+//    
+//    static func saveReminderToMyList(myList: MyList, reminder: Reminder) throws {
+//        myList.addToReminders(reminder)
+//        try save()
+//    }
+//    
+    @discardableResult
+    static func saveReminderToMyList(myList: MyList, reminderTitle: String) throws -> Reminder {
         let reminder = Reminder(context: viewContext)
         reminder.title = reminderTitle
         myList.addToReminders(reminder)
         try save()
+        return reminder
     }
     
     static func getRemindersByList(myList: MyList) -> NSFetchRequest<Reminder> {
@@ -74,7 +86,7 @@ class ReminderService {
             let today = Date()
             let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)
 //            request.predicate = NSPredicate(format: "((reminderDate != nil) AND (reminderDate BETWEEN {%@, %@})) OR ((reminderTime != nil) AND (reminderTime BETWEEN {%@, %@}))", today as NSDate, tomorrow! as NSDate)
-            request.predicate = NSPredicate(format: "(reminderDate != nil && reminderDate BETWEEN {%@, %@}) || (reminderDate == nil && reminderTime != nil)", today as NSDate, tomorrow! as NSDate)
+            request.predicate = NSPredicate(format: "((reminderDate != nil && reminderDate BETWEEN {%@, %@}) || (reminderDate == nil && reminderTime != nil)) && isCompleted = false", today as NSDate, tomorrow! as NSDate)
         case .all:
             request.predicate = NSPredicate(format: "isCompleted = false")
         case .scheduled:

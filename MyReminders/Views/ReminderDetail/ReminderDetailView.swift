@@ -8,17 +8,30 @@
 import SwiftUI
 
 struct ReminderDetailView: View {
+    var isNew: Bool = false
+    @Binding var newReminder: Reminder
     
     @Environment(\.dismiss) private var dismiss
     @Binding var  reminder: Reminder
-    @State var editConfig: ReminderEditConfig = ReminderEditConfig()
+    @State var editConfig: ReminderEditConfig
     
     private var isFormValid: Bool {
         !editConfig.title.isEmpty
     }
     
-    //TODO: 날짜 선택 부분 마무리, 시간 선택 부분에도 적용하기
     @State private var showDatePicker = false
+    
+    var originList: MyList
+    @State private var editList: MyList?
+   
+    let onSaveNew: (() -> Void)?
+    
+    private func dateToStr(date: Date?, dateStyle: Date.FormatStyle.DateStyle, timeStyle: Date.FormatStyle.TimeStyle) -> String {
+        guard let date else {
+            return Date().formatted(date: dateStyle, time: timeStyle)
+        }
+        return date.formatted(date: dateStyle, time: timeStyle)
+    }
     
     var body: some View {
         NavigationView {
@@ -42,7 +55,7 @@ struct ReminderDetailView: View {
                                 VStack(alignment: .leading) {
                                     Text("날짜")
                                     if editConfig.hasDate {
-                                        Text("날짜 들어갈 부분")
+                                        Text(dateToStr(date: editConfig.reminderDate, dateStyle: .numeric, timeStyle: .omitted))
                                             .font(.caption)
                                             .foregroundColor(.blue)
                                     }
@@ -58,8 +71,24 @@ struct ReminderDetailView: View {
                         }
                         
                         Toggle(isOn: $editConfig.hasTime) {
-                            Image(systemName: "clock")
-                                .foregroundColor(.blue)
+                            HStack {
+                                Image(systemName: "clock")
+                                    .foregroundColor(.white)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .fill(.blue)
+                                            .frame(width: 30, height: 30)
+                                    }.padding([.trailing], 5)
+                                VStack(alignment: .leading) {
+                                    Text("시간")
+                                    if editConfig.hasTime {
+                                        Text(dateToStr(date: editConfig.reminderTime, dateStyle: .omitted, timeStyle: .shortened))
+                                            .font(.caption)
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+
+                            }
                         }
                         
                         if editConfig.hasTime {
@@ -70,12 +99,20 @@ struct ReminderDetailView: View {
                     
                     Section {
                         NavigationLink {
-                            SelectListView(selectedList: $reminder.list)
+                            SelectListView(reminder: isNew ? $newReminder : $reminder) { selectedList in
+                                do {
+                                    try ReminderService.save()
+                                }
+                                catch {
+                                    print(error)
+                                }
+                                editList = selectedList
+                            }
                         } label: {
                             HStack {
                                 Text("목록")
                                 Spacer()
-                                Text(reminder.list!.name)
+                                Text(editList?.name ?? originList.name)
                             }
                         }
 
@@ -91,9 +128,6 @@ struct ReminderDetailView: View {
                     }
                 }.listStyle(.insetGrouped) // :List
             } // :VSTACK
-            .onAppear {
-                editConfig = ReminderEditConfig(reminder: reminder)
-            }
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("세부사항")
@@ -101,23 +135,33 @@ struct ReminderDetailView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("완료") {
+                        let temp = isNew ? newReminder : reminder
                         do {
-                            let updated = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                            let updated = try ReminderService.updateReminder(reminder: temp, editConfig: editConfig)
                             if updated {
-                                if reminder.reminderDate != nil || reminder.reminderTime != nil {
-                                    let userData = UserData(title: reminder.title, body: reminder.notes, date: reminder.reminderDate, time: reminder.reminderTime)
+                                if temp.reminderDate != nil || temp.reminderTime != nil {
+                                    let userData = UserData(title: temp.title, body: temp.notes, date: temp.reminderDate, time: temp.reminderTime)
                                     NotificationManager.scheduleNotification(userData: userData)
                                 }
                             }
                         } catch {
                             print(error)
                         }
+                        if isNew {onSaveNew!()}
                         dismiss()
                     }.disabled(!isFormValid)
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("취소") {
+                        if isNew {
+                            do {
+                                try ReminderService.deleteReminder(newReminder)
+                            } catch {
+                                print(error)
+                            }
+                        }
+                        //TODO : Alert 넣기
                         dismiss()
                     }
                 }
@@ -126,8 +170,8 @@ struct ReminderDetailView: View {
     }
 }
 
-struct ReminderDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReminderDetailView(reminder: .constant(PreviewData.reminder))
-    }
-}
+//struct ReminderDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ReminderDetailView(reminder: .constant(PreviewData.reminder))
+//    }
+//}
